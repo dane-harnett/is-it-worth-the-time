@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" ng-app="tableApp">
+<head>
+  <meta charset="utf-8">
+  <title>Is it worth the time?</title>
+  <style>
+    body {
+      font-family: Verdana;
+    }
+    td {
+      padding: 10px;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+  <script src="js/controllers.js"></script>
+</head>
+<body ng-controller="TableCtrl">
+  <h1>Is it worth the time?</h1>
+  <p>Inspired by <a href="http://xkcd.com/1205/">http://xkcd.com/1205/</a></p>
+  <h2>
+    Time saved over:
+    <select ng-model="totalDays">
+      <option value="5">One working week</option>
+      <option value="7">One week</option>
+      <option value="20">One working month</option>
+      <option value="30">One month</option>
+      <option value="365">One year</option>
+      <option value="1825">Five years</option>
+    </select>
+  </h2>
+  <table border="1">
+    <tr>
+      <td></td>
+      <td colspan="{{ columns.length + 1 }}">Frequency of the task</td>
+    </tr>
+    <tr>
+      <td>Time shaved off</td>
+      <td ng-repeat="column in columns">{{ column.label }}</td>
+      <td><input type="text" ng-model="customFrequency"></td>
+    </tr>
+    <tr ng-repeat="row in rows">
+      <td>{{ row.label }}</td>
+      <td ng-repeat="column in columns">{{ secondsHumanFormat(row.value * column.value * totalDays) }}</td>
+      <td>{{ secondsHumanFormat(row.value * customFrequency * totalDays) }}</td>
+    </tr>
+    <tr>
+      <td><input type="text" ng-model="customTimeShaved"></td>
+      <td ng-repeat="column in columns">{{ secondsHumanFormat(customTimeShaved * column.value * totalDays) }}</td>
+      <td>{{ secondsHumanFormat(customTimeShaved * customFrequency * totalDays) }}</td>
+    </tr>
+  </table>
+</body>
+</html>
